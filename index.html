@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victoria Grabovieski - Starfire Style</title>
+    <!-- Fuente moderna y llamativa -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset básico y configuración de pantalla completa */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Fondo degradado inspirado en el espacio de Tamaran y el uniforme de Starfire */
+            background: linear-gradient(135deg, #2d0b3d 0%, #63104a 50%, #a21b6b 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Contenedor principal perfectamente centrado */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        /* Estilo del nombre principal */
+        .hero-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #ffffff;
+            letter-spacing: 2px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            /* Sombra de texto simulando el fuego/energía de Starfire */
+            text-shadow: 
+                0 0 10px #ff66cc,
+                0 0 20px #ff007f,
+                0 0 40px #9d00ff;
+            transition: all 0.4s ease;
+        }
+
+        /* Efecto al pasar el mouse: se vuelve verde brillante (Starbolts energy) */
+        .hero-name:hover {
+            color: #00ffcc;
+            text-shadow: 
+                0 0 15px #00ffcc,
+                0 0 30px #00ff88,
+                0 0 60px #00ff00;
+            transform: scale(1.05);
+        }
+
+        /* Detalles decorativos superiores e inferiores (gema del uniforme) */
+        .star-badge {
+            width: 24px;
+            height: 24px;
+            background-color: #00ffcc;
+            transform: rotate(45deg);
+            margin: 0 auto 25px auto;
+            box-shadow: 0 0 15px #00ffcc;
+            position: relative;
+        }
+
+        .star-badge::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 2px solid #ffffff;
+            transform: rotate(0deg);
+        }
+
+        /* Contenedor de partículas/estrellas en el fondo */
+        .starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Estilo dinámico para las estrellas creadas por JS */
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: float-star linear infinite;
+            opacity: 0.8;
+        }
+
+        /* Animación de flotación planetaria/estelar */
+        @keyframes float-star {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Adaptación para pantallas de celulares */
+        @media (max-width: 768px) {
+            .hero-name {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            body {
+                background: linear-gradient(135deg, #2d0b3d 0%, #a21b6b 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Capa de fondo para las estrellas animadas -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- Contenido Centrado -->
+    <div class="container">
+        <div class="star-badge"></div>
+        <h1 class="hero-name" id="nameTrigger">Victoria<br>Grabovieski</h1>
+    </div>
+
+    <script>
+        // Generador dinámico de estrellas de fondo (Motivo Tamaran/Starfire)
+        function createStarfield() {
+            const container = document.getElementById('starfield');
+            const starCount = 60; // Cantidad de estrellas en pantalla
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Variación de tamaños y posiciones aleatorias
+                const size = Math.random() * 4 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // Velocidades de flotación aleatorias
+                const duration = Math.random() * 8 + 4;
+                star.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio para que no salgan todas juntas al inicio
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Colores temáticos para las estrellas (Blanco, Rosa pastel, Verde energía)
+                const colors = ['#ffffff', '#ffb3df', '#b3fff0'];
+                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Si la estrella es de color verde o rosa, le damos un leve brillo
+                if (size > 2) {
+                    star.style.boxShadow = `0 0 8px ${star.style.backgroundColor}`;
+                }
+
+                container.appendChild(star);
+            }
+        }
+
+        // Interactividad extra: Al hacer click en el nombre, lanza un destello de energía en la consola
+        document.getElementById('nameTrigger').addEventListener('click', () => {
+            console.log("%c💥 ¡Starbolt Activo! Victoria desata su poder solar.", "color: #00ffcc; font-size: 16px; font-weight: bold;");
+        });
+
+        // Inicializar el escenario
+        createStarfield();
+    </script>
+</body>
+</html>
